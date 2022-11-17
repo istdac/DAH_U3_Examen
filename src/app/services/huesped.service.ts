@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { h } from 'ionicons/dist/types/stencil-public-runtime';
 import { Huesped } from '../models/huesped';
 @Injectable({
   providedIn: 'root'

@@ -38,9 +38,11 @@ export class ListHuespedPage implements OnInit {
     });
     await alert.present();
   }
+  
   public addHuesped():void{
     this.router.navigate(['/new-huesped'],{});
   }
+
   ngOnInit() {
   }
 
