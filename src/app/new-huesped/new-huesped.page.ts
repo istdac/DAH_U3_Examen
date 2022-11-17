@@ -17,7 +17,7 @@ export class NewHuespedPage implements OnInit {
   ngOnInit() {
     this.hueForm = this.fb.group(
       {
-        nombre:['John Doe',Validators.compose([
+        nombre:['',Validators.compose([
           Validators.required,
           Validators.minLength(1)
         ])],
@@ -30,6 +30,11 @@ export class NewHuespedPage implements OnInit {
 
       }
     );
+    this.valMessage={
+      nombre:[
+        {type:'required',message:'Nombre obligatorio'}
+      ]
+    };
   }
   public newHuesped(): void{
     //this.hs.newHuesped(this.hue);

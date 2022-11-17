@@ -1,9 +1,33 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>newHuesped</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Añadir Huesped</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-grid>
+    <form [formGroup]="hueForm">
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Nombre</ion-label>
+            <ion-input formControlName="nombre"></ion-input>
+          </ion-item>
+          <div>
+            <ng-container *ngFor="let item of valMessage['nombre']">
+              <div
+                class="errorMessage"
+                *ngIf="(hueForm.get('nombre').dirty || hueForm.get('nombre').touched) && hueForm.get('nombre').hasError(item.type)"
+              >
+                {{item.message}}
+              </div>
+            </ng-container>
+          </div>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-grid>
 </ion-content>
