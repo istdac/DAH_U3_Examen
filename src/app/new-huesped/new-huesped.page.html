@@ -50,7 +50,7 @@
         <ion-col>
           <ion-item>
             <ion-label position="floating">Fecha de Ingreso</ion-label>
-            <ion-datetime formControlName="fingreso"></ion-datetime>
+            <ion-datetime presentation="date" min="{{date}}" formControlName="fingreso" ></ion-datetime>
           </ion-item>
           <div>
             <ng-container *ngFor="let item of valMessage['fingreso']">
@@ -67,14 +67,14 @@
       <ion-row>
         <ion-col>
           <ion-item>
-            <ion-label position="floating">Fecha de Ingreso</ion-label>
-            <ion-datetime formControlName="fingreso"></ion-datetime>
+            <ion-label position="floating">Fecha de Egreso</ion-label>
+            <ion-datetime value="{{date2S}}" presentation="date" min="{{date2S}}" formControlName="fegreso" ></ion-datetime>
           </ion-item>
           <div>
-            <ng-container *ngFor="let item of valMessage['fingreso']">
+            <ng-container *ngFor="let item of valMessage['fegreso']">
               <div
                 class="errorMessage"
-                *ngIf="(hueForm.get('fingreso').dirty || hueForm.get('fingreso').touched) && hueForm.get('fingreso').hasError(item.type)"
+                *ngIf="(hueForm.get('fegreso').dirty || hueForm.get('fegreso').touched) && hueForm.get('fegreso').hasError(item.type)"
               >
                 {{item.message}}
               </div>
