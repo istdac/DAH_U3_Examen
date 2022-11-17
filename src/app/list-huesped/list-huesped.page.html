@@ -1,9 +1,23 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>listHuesped</ion-title>
+    <ion-title>Huespedes Registrados</ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-content [fullscreen]="true">
+  <ion-row>
+    <ion-col>
+      <ion-list>
+        <ion-item *ngFor="let item of huespedes; let i = index">
+          <ion-label> {{item.nombre}}</ion-label>
+          <ion-label> {{item.tel}}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+  <ion-fab horizontal="end" >
+    <ion-fab-button (click)="addHuesped()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
-<ion-content>
-
-</ion-content>
+</ion-content >
