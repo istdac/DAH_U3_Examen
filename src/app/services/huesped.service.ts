@@ -31,6 +31,13 @@ export class HuespedService {
         token: '42057',
         admin: true
       },
+      {
+        nombre: 'Diego2',
+        codigo: undefined,
+        tel: '31113451647',
+        token: '123456',
+        admin: false
+      },
     ];
     this.lang = "es"
    }//const

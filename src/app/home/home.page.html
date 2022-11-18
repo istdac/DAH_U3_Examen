@@ -7,9 +7,11 @@
 </ion-header>
 
 <ion-content>
+  <form [formGroup]="loginForm">
   <ion-item>
     <ion-label position="stacked">Ingrese su token de usuario</ion-label>
-    <ion-input color="primary" id="pw"  type="password" value="password" required></ion-input>
+    <ion-input formControlName="pw" color="primary" type="password" ></ion-input>
   </ion-item>
   <ion-button fill="outline" shape="round" expand="block" (click)="checkLogin()">Login</ion-button>
+</form>
 </ion-content>
