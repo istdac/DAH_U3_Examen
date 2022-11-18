@@ -4,8 +4,8 @@ import { Huesped } from '../models/huesped';
   providedIn: 'root'
 })
 export class HuespedService {
-  //private huespedes: Huesped[] = [];
-  private huespedes:Huesped[];
+  private huespedes: Huesped[] = [];
+  private lang: string
   constructor() {
     this.huespedes = [
       {
@@ -32,7 +32,7 @@ export class HuespedService {
         admin: true
       },
     ];
-    
+    this.lang = "es"
    }//const
 
    public getHuespedByNombre(nombre: String): Huesped {
@@ -61,4 +61,12 @@ export class HuespedService {
     this.huespedes.splice(pos,1);
     return this.huespedes;
    }
+
+   public setLang(l: string){
+    this.lang = l
+  }
+
+  public getLang(): string{
+    return this.lang
+  }
 }//huespedService
