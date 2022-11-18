@@ -25,6 +25,12 @@ export class Tab3Page {
     this.checkLanguage();
   }
 
+  public changeLang(l:string){
+    this.leng=l
+    this.checkLanguage()
+  }
+
+
   public checkLanguage() {
     switch (this.leng) {
       case 'es':

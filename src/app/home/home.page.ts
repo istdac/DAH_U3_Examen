@@ -20,7 +20,7 @@ export class HomePage implements OnInit{
     });
    }
    
-   public checkLogin(){
+   public checkLogin(): void{
     var token = this.loginForm.get('pw').value
     console.log(token)
     const match = this.users.findIndex(
@@ -34,7 +34,9 @@ export class HomePage implements OnInit{
       if(this.users[match].admin){
         this.router.navigate(['/list-huesped'],{})
       }else{
-        this.router.navigate(['/tabs'],{})
+        this.router.navigate(['/tabs/tab2'],{
+          queryParams:{index:match}
+        })
       }
     }
   }

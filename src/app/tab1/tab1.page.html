@@ -1,4 +1,7 @@
 <ion-header [translucent]="true">
+  <ion-buttons slot="start">
+    <ion-back-button></ion-back-button>
+  </ion-buttons>
   <ion-toolbar>
     <ion-title>
       {{this.reglamentoT}}
@@ -8,6 +11,15 @@
 
 
 <ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="changeLang('es')">ES</ion-button>
+        <ion-button (click)="changeLang('en')">EN</ion-button>
+        <ion-button (click)="changeLang('fr')">FR</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <ion-card color="light">
     <ion-card-header>
       <ion-card-title>{{this.horarioT}}</ion-card-title>

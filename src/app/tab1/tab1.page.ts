@@ -36,6 +36,11 @@ export class Tab1Page {
     this.leng = this.huespedService.getLang();
     this.checkLanguage();
   } 
+  public changeLang(l:string){
+    this.leng=l
+    this.checkLanguage()
+  }
+
   public checkLanguage() {
     switch (this.leng) {
       case 'es':

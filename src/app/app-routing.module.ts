@@ -9,7 +9,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'new-huesped',
+    redirectTo: 'home',
     pathMatch: 'full'
   },
   {
