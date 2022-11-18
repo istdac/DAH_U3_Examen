@@ -3,6 +3,7 @@ import { Huesped } from '../models/huesped';
 import { HuespedService } from '../services/huesped.service';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-list-huesped',
   templateUrl: './list-huesped.page.html',
@@ -12,8 +13,13 @@ export class ListHuespedPage implements OnInit {
 
   public huespedes: Huesped[];
 
-  constructor(private hs: HuespedService, private ac: AlertController, private router: Router ) { 
+  constructor(private hs: HuespedService, private ac: AlertController, private router: Router, 
+    private activateroute:ActivatedRoute ) { 
     this.huespedes=hs.getAdmins();
+    this.activateroute.queryParams.subscribe((params) => {
+      this.huespedes = this.hs.getUsers();
+    });
+
   }
 
   public async deleteHuesped(pos:number){

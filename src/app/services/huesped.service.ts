@@ -13,7 +13,7 @@ export class HuespedService {
         codigo: undefined,
         tel: '3111568742',
         habitacion: undefined,
-        token: '8675309',
+        token: 'dicad3111568742',
         admin: true
       },
       {
@@ -42,6 +42,17 @@ export class HuespedService {
     this.lang = "es"
    }//const
 
+   public getHuespedByNombre(nombre: String): Huesped {
+    let item: Huesped;
+    item = this.huespedes.find( huesped =>{
+      return huesped.nombre===nombre;
+    })
+     return item;
+  }
+   public addHuesped(newHuesped: Huesped){
+    this.huespedes.push(newHuesped);
+  }
+ 
    //getters
    public getUsers(): Huesped[]{
     return this.huespedes;
@@ -52,10 +63,7 @@ export class HuespedService {
    public getAdmins():Huesped[]{
     return this.huespedes.filter(h=>h.admin);
    }
-   
-   public addHuesped(hues:Huesped){
-    this.huespedes.push(hues);
-   }
+  
    public deleteHuesped(pos:number):Huesped[]{
     this.huespedes.splice(pos,1);
     return this.huespedes;

@@ -9,7 +9,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'new-huesped',
     pathMatch: 'full'
   },
   {
@@ -50,6 +50,15 @@ const routes: Routes = [
   {
     path: 'list-huesped',
     loadChildren: () => import('./list-huesped/list-huesped.module').then( m => m.ListHuespedPageModule)
+  },
+  {
+    path: 'view-huesped',
+    children: [
+      {
+        path:":nombre",
+        loadChildren: () => import('./view-huesped/view-huesped.module').then( m => m.ViewHuespedPageModule)
+      }
+    ]
   },
 ];
 

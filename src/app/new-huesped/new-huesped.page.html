@@ -14,14 +14,15 @@
         <ion-col>
           <ion-item>
             <ion-label position="floating">Nombre</ion-label>
-            <ion-input formControlName="nombre"></ion-input>
+            <!--ion-input [(ngModel)]="huesped.nombre"></!--ion-input-->
+            <ion-input formControlName="nombre" ></ion-input>
           </ion-item>
           <div>
             <ng-container *ngFor="let item of valMessage['nombre']">
               <div
                 class="errorMessage"
-                *ngIf="(hueForm.get('nombre').dirty || hueForm.get('nombre').touched) && hueForm.get('nombre').hasError(item.type)"
-              >
+                *ngIf="(hueForm.get('nombre').dirty || hueForm.get('nombre').touched) 
+                && hueForm.get('nombre').hasError(item.type)">
                 {{item.message}}
               </div>
             </ng-container>
@@ -46,11 +47,55 @@
           </div>
         </ion-col>
       </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-select formControlName="habitacion"  placeholder="Selecciona habitacion">
+                <ion-select-option value="1">HABITACION 1</ion-select-option>
+                <ion-select-option value="2">HABITACION 2</ion-select-option>
+                <ion-select-option value="3">HABITACION 3</ion-select-option>
+                <ion-select-option value="4">HABITACION 4</ion-select-option>
+                <ion-select-option value="5">HABITACION 5</ion-select-option>
+                <ion-select-option value="6">HABITACION 6</ion-select-option>
+                <ion-select-option value="7">HABITACION 7</ion-select-option>
+                <ion-select-option value="8">HABITACION 8</ion-select-option>
+                <ion-select-option value="9">HABITACION 9</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+
+          <!--div>
+            <ng-container *ngFor="let item of valMessage['telefono']">
+              <div
+                class="errorMessage"
+                *ngIf="(hueForm.get('telefono').dirty || hueForm.get('telefono').touched) && hueForm.get('telefono').hasError(item.type)"
+              >
+                {{item.message}}
+              </div>
+            </ng-container>
+          </div-->
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-select formControlName="rol"  placeholder="Selecciona rol">
+                <ion-select-option value="1">HUESPED</ion-select-option>
+                <ion-select-option value="2">ADMINISTRADOR</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
       <ion-row>
         <ion-col>
           <ion-item>
             <ion-label position="floating">Fecha de Ingreso</ion-label>
-            <ion-datetime presentation="date" min="{{date}}" formControlName="fingreso" ></ion-datetime>
+            <ion-datetime size="cover" presentation="date" min="{{date}}" formControlName="fingreso" ></ion-datetime>
           </ion-item>
           <div>
             <ng-container *ngFor="let item of valMessage['fingreso']">
@@ -66,9 +111,9 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <ion-item>
+          <ion-item >
             <ion-label position="floating">Fecha de Egreso</ion-label>
-            <ion-datetime value="{{date2S}}" presentation="date" min="{{date2S}}" formControlName="fegreso" ></ion-datetime>
+            <ion-datetime size="cover" value="{{date2S}}" presentation="date" min="{{date2S}}" formControlName="fegreso" ></ion-datetime>
           </ion-item>
           <div>
             <ng-container *ngFor="let item of valMessage['fegreso']">
@@ -82,6 +127,9 @@
           </div>
         </ion-col>
       </ion-row>
+      <ion-button class="ion-margin"  (click)="addHuesped()" expand="block" fill="clear" shape="round">
+        Agregar Huesped
+      </ion-button>
     </form>
   </ion-grid>
 </ion-content>

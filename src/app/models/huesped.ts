@@ -5,6 +5,6 @@ export class Huesped {
     habitacion?: string;
     token!: string;
     admin!: boolean;
-    fingreso?: string;
-    fegreso?: string;
+    fingreso?: Date;
+    fegreso?: Date;
 }
