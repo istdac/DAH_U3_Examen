@@ -95,7 +95,7 @@
         <ion-col>
           <ion-item>
             <ion-label position="floating">Fecha de Ingreso</ion-label>
-            <ion-datetime size="cover" presentation="date" min="{{date}}" formControlName="fingreso" ></ion-datetime>
+            <ion-datetime size="cover" presentation="date" min="{{date}}" max = "{{date}}" formControlName="fingreso" ></ion-datetime>
           </ion-item>
           <div>
             <ng-container *ngFor="let item of valMessage['fingreso']">

@@ -11,6 +11,7 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['./new-huesped.page.scss'],
 })
 export class NewHuespedPage implements OnInit {
+  public hoy = new Date(Date.now()).toISOString()
   public huesped: Huesped;
   public hue!: Huesped;
   public hueForm!: FormGroup;
