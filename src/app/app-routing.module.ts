@@ -59,7 +59,11 @@ const routes: Routes = [
         loadChildren: () => import('./view-huesped/view-huesped.module').then( m => m.ViewHuespedPageModule)
       }
     ]
+  },  {
+    path: 'send-message',
+    loadChildren: () => import('./send-message/send-message.module').then( m => m.SendMessagePageModule)
   },
+
 ];
 
 @NgModule({
