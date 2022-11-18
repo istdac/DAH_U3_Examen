@@ -28,7 +28,6 @@ export class HuespedService {
         nombre: 'Ana Bertha',
         codigo: undefined,
         tel: '31113451647',
-        habitacion: undefined,
         token: '42057',
         admin: true
       },
