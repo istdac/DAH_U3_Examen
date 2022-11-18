@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Añadir Huesped</ion-title>
+    <ion-title>Añadir Huesped edit</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -40,7 +40,7 @@
               <div
                 class="errorMessage"
                 *ngIf="(hueForm.get('telefono').dirty || hueForm.get('telefono').touched) && hueForm.get('telefono').hasError(item.type)"
-              >
+                >
                 {{item.message}}
               </div>
             </ng-container>
@@ -127,7 +127,7 @@
           </div>
         </ion-col>
       </ion-row>
-      <ion-button class="ion-margin"  (click)="addHuesped()" expand="block" fill="clear" shape="round">
+      <ion-button class="ion-margin"  (click)="addHuesped()" expand="block" fill="clear" shape="round" [routerLink]="['/list-huesped']">
         Agregar Huesped
       </ion-button>
     </form>
