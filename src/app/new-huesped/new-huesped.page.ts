@@ -5,6 +5,7 @@ import { HuespedService } from '../services/huesped.service';
 import { FormGroup,FormBuilder,Validators,   } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-new-huesped',
   templateUrl: './new-huesped.page.html',
@@ -21,7 +22,8 @@ export class NewHuespedPage implements OnInit {
   public date2 :Date;
   public date2S;
   constructor(private huespedService: HuespedService, private fb: FormBuilder, private dp: DatePipe,
-    private alertController: AlertController, private toastController: ToastController) {
+    private alertController: AlertController, private toastController: ToastController,
+    private router: Router) {
 
     this.hue = {
       nombre: "",
@@ -31,7 +33,8 @@ export class NewHuespedPage implements OnInit {
       token: "",
       admin: false,
       fingreso: new Date(""),
-      fegreso: new Date("")
+      fegreso: new Date(""),
+      aporte: 0
     }
    }
 
@@ -53,6 +56,7 @@ export class NewHuespedPage implements OnInit {
         ])],
         nombre:['',Validators.compose([
           Validators.required,
+          Validators.pattern(new RegExp(/^[A-Za-z ]+$/))
         ])],
         telefono:['311-8675-309',Validators.compose([
           Validators.required,
@@ -67,12 +71,17 @@ export class NewHuespedPage implements OnInit {
           Validators.required,
           
         ])],
+        aporte:['',Validators.compose([
+          Validators.required,
+          Validators.pattern(new RegExp(/^[0-9]+$/))
+        ])]
         
       }
     );
     this.valMessage={
       nombre:[
         {type:'required',message:'Nombre obligatorio'},
+        {type:'pattern',message:'Nombre no formateado correctamente'},
       ],
       telefono:[
         {type:'required',message:'Teléfono obligatorio'},
@@ -86,14 +95,18 @@ export class NewHuespedPage implements OnInit {
         {type:'maxlength',message:'Teléfono debe contener no más de 12 caracteres'},
         {type:'pattern',message:'Teléfono no formateado correctamente 000-0000-000'},
       ],
+      aporte:[
+        {type:'required',message:'Aporte obligatorio'},
+        {type:'pattern',message:'Ingrese un valor válido'}
+      ]
     };
   }
 
-  async presentAlertError() {
+  async presentAlertError(m: string) {
     const alert = await this.alertController.create({
       header: 'Alerta',
       subHeader: 'Aviso: ',
-      message: 'NO se guardo, ingrese todos los campos!',
+      message: m,
       buttons: ['OK'],
     });
 
@@ -115,58 +128,66 @@ export class NewHuespedPage implements OnInit {
   }
 
   public addHuesped(){
-    if(this.hueForm.get('nombre').value!==''){
+    if(this.hueForm.valid){
+      if(this.hueForm.get("fingreso").value>=this.hueForm.get("fegreso").value){
+        console.log("Falso")
+        this.presentAlertError('Ingrese una fecha de egreso válida');
+        return
+      }
       var esadmin=false
       var tokendelhuesped;
       if(this.hueForm.get('rol').value=="1"){
-        esadmin=false
-      }else{
-        esadmin=true
-      }
-
-      if(esadmin){
-          tokendelhuesped="admin"
-      }else{
         tokendelhuesped=this.hueForm.get('telefono').value+"_"+this.hueForm.get('habitacion').value;
-        //el token sera compuesto por dos cosas
-        //el numero de telefono mas el numero de la habitacion
-        //y esta dividido por un "_"
+      }else{
+        tokendelhuesped="admin"
+      } 
+      let max:number
+      switch(this.hueForm.get('habitacion').value){
+        case '1': {max=500
+          break;}
+        case '2': {max=250
+          break;}
+        case '3': {max=100
+          break;}
+        case '4': {max=1500
+          break;}
+        case '5': {max=2000
+          break;}
+        case '6': {max=500
+          break;}
+        case '7': {max=2500
+          break;}
+        case '8': {max=750
+          break;}
+        case '9': {max=800
+          break;}
+      }
+      if(this.hueForm.get('aporte').value>max){
+        this.presentAlertError('Ingrese un aporte apropiado');
+        return
       }
       this.hue = {
-        nombre: this.hueForm.get('nombre').value,
-        codigo: tokendelhuesped,
+          nombre: this.hueForm.get('nombre').value,
+          codigo: tokendelhuesped,
 
-        tel: this.hueForm.get('telefono').value,
-        habitacion: this.hueForm.get('habitacion').value,
+          tel: this.hueForm.get('telefono').value,
+          habitacion: this.hueForm.get('habitacion').value,
 
-        token: tokendelhuesped,
-
-        admin: esadmin,
-        fingreso: this.newDate(this.hueForm.get("fingreso").value),
-        fegreso: this.newDate(this.hueForm.get("fegreso").value)
-      }  
-      this.huespedService.addHuesped(this.hue);
+          token: tokendelhuesped,
+          aporte: this.hueForm.get('aporte').value,
+          admin: esadmin,
+          fingreso: this.newDate(this.hueForm.get("fingreso").value),
+          fegreso: this.newDate(this.hueForm.get("fegreso").value)
+        }  
+        this.huespedService.addHuesped(this.hue);
         //this.presentAlert();
         this.presentToast("top")
         console.log(this.hue);
-      }else{
+        this.router.navigate(['/list-huesped'],{});
+
+    }else{
         console.log(this.hue);
-        this.presentAlertError()
-      }
+        this.presentAlertError('NO se guardó, ¡ingrese todos los campos correctamente!')
     }
-  
-
+  }
 }
-
-/*
-  public addProduct() {
-    this.productsService.addProduct(this.producto);
-    this.producto = {
-      id: "",
-      img:"",
-      name:"",
-      price: 0,
-      amount: 0
-    }
-  }*/
-

@@ -7,4 +7,5 @@ export class Huesped {
     admin!: boolean;
     fingreso?: Date;
     fegreso?: Date;
+    aporte?: number;
 }
