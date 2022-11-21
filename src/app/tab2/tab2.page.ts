@@ -23,6 +23,7 @@ export class Tab2Page implements OnInit {
   public cajaS :string;
   public codigo: string;
   public act: string;
+  public aporteRemain: string;
   constructor(private huespedService: HuespedService, private aroute: ActivatedRoute) {}
 
   ngOnInit() {
@@ -53,27 +54,44 @@ export class Tab2Page implements OnInit {
   }
 
   public checkLanguage(){
+    let max: number 
     switch(this.huesped.habitacion){
-      case '1': this.codigo = '1234'
-        break;
-      case '2': this.codigo = '5469'
-        break;
-      case '3': this.codigo = '2354'
-        break;
-      case '4': this.codigo = '8520'
-        break;
-      case '5': this.codigo = '3460'
-        break;
-      case '6': this.codigo = '1287'
-        break;
-      case '7': this.codigo = '1693'
-        break;
-      case '8': this.codigo = '1263'
-        break;
-      case '9': this.codigo = '9851'
-        break;
-      case '10': this.codigo = '2375'
-        break;
+      case '1': {
+        this.codigo = '1234'
+        max=500
+        break;}
+      case '2': {
+        this.codigo = '5469'
+        max=250
+        break;}
+      case '3': {
+        this.codigo = '2354'
+        max=100
+        break;}
+      case '4': {
+        this.codigo = '8520'
+        max=1500
+        break;}
+      case '5': {
+        this.codigo = '3460'
+        max=2000
+        break;}
+      case '6': {
+        this.codigo = '1287'
+        max=500
+        break;}
+      case '7': {
+        this.codigo = '1693'
+        max=2500
+        break;}
+      case '8': {
+        this.codigo = '1263'
+        max=750
+        break;}
+      case '9': {
+        this.codigo = '9851'
+        max=800
+        break;}
     }
     switch(this.leng){
       case 'es':
@@ -86,6 +104,11 @@ export class Tab2Page implements OnInit {
         this.horarioH='Este hotel está abierto de las 03:00 a las 00:00';
         this.cajaST='Caja de Seguridad';
         this.cajaS='Hay una caja de seguridad debajo de la cama principal, como está en la ubicación '+this.huesped.habitacion+ ' su caja tiene un código de acceso '+this.codigo ;
+        if(this.huesped.aporte-max==0){
+          this.aporteRemain="Ha pagado su habitación, disfrute su tiempo"
+        }else{
+          this.aporteRemain="Ha pagado de aporte $"+this.huesped.aporte+" con saldo restante de $"+(max-this.huesped.aporte)+" ; Asegure pagar antes de acabar su visita"
+        }
         break;
       case 'en':
         this.act='Room Instructions'
@@ -97,6 +120,11 @@ export class Tab2Page implements OnInit {
         this.horarioH='This hotel is open from 3 am until midnight';
         this.cajaST='Security Safe';
         this.cajaS='Located underneath the main bed is a safe with a passcode. The passcode for room '+this.huesped.habitacion+ ' is '+ this.codigo;
+        if(this.huesped.aporte-max==0){
+          this.aporteRemain="Your room has been paid, enjoy your stay"
+        }else{
+          this.aporteRemain="You have paid $"+this.huesped.aporte+" out of a total of $"+(max-this.huesped.aporte)+" ; Make sure to pay the remainder before checking out"
+        }
         break;
       case 'fr':
         this.act='Instructions de la chambre'
@@ -108,6 +136,11 @@ export class Tab2Page implements OnInit {
         this.horarioH='Cet hôtel est ouvert de 3h à minuit';
         this.cajaST='Coffre-fort de sécurité';
         this.cajaS='Situé sous le lit principal est un coffre-fort avec un mot de passe. Le code d\'accès pour la chambre '+this.huesped.habitacion+ ' est '+ this.codigo;
+        if(this.huesped.aporte-max==0){
+          this.aporteRemain="Votre chambre a été payée, profitez de votre séjour"
+        }else{
+          this.aporteRemain="Vous avez payé $"+this.huesped.aporte+" sur un total de $"+(max-this.huesped.aporte)+" ; Assurez-vous de payer le reste avant de partir"
+        }
         break;
     }
   }
