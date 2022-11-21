@@ -6,13 +6,15 @@ import { Huesped } from '../models/huesped';
 export class HuespedService {
   private huespedes: Huesped[] = [];
   private lang: string
+  private habsOcupadas:string
   constructor() {
+    this.habsOcupadas="";
     this.huespedes = [
       {
         nombre: 'Diego Cadena',
         codigo: undefined,
         tel: '3111568742',
-        habitacion: undefined,
+        habitacion: "undefined",
         token: '2222',
         admin: true
       },
@@ -20,7 +22,7 @@ export class HuespedService {
         nombre: 'Adrian Valentin',
         codigo: undefined,
         tel: '31134584216',
-        habitacion: undefined,
+        habitacion: "undefined",
         token: '0000',
         admin: true
       },
@@ -28,6 +30,7 @@ export class HuespedService {
         nombre: 'Ana Bertha',
         codigo: undefined,
         tel: '31113451647',
+        habitacion: "undefined",
         token: '1111',
         admin: true
       },
@@ -35,6 +38,7 @@ export class HuespedService {
         nombre: 'Diego2',
         codigo: undefined,
         tel: '31113451647',
+        habitacion: "undefined",
         token: '123456',
         admin: false
       },
@@ -54,9 +58,13 @@ export class HuespedService {
   }
  
    //getters
+   public getHabsOcupadas():string{
+    return this.habsOcupadas;
+   }
    public getUsers(): Huesped[]{
     return this.huespedes;
    }
+
    public getClients():Huesped[]{
     return this.huespedes.filter(h=>!h.admin);
    }
@@ -75,5 +83,21 @@ export class HuespedService {
 
   public getLang(): string{
     return this.lang
+  }
+
+  public isRoomAbaliable(room:string): boolean { 
+    this.habsOcupadas='';
+    for(let i = 0 ; i < this.huespedes.length ; i++){
+      if(this.huespedes[i].habitacion===room){//si alguna de las habitaciones ya esta ocupada, mandar falso
+          console.log(this.huespedes[i].habitacion+"==="+room);
+          this.habsOcupadas=this.habsOcupadas+room+", "
+          
+      }
+      //console.log(this.huespedes[i].habitacion);
+    }
+    if(this.habsOcupadas===''){
+      return true
+    }
+    return false
   }
 }//huespedService

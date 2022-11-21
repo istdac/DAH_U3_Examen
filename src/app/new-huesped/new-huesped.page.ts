@@ -128,66 +128,83 @@ export class NewHuespedPage implements OnInit {
   }
 
   public addHuesped(){
+
+
+//          this.huespedService.addHuesped(this.hue);
     if(this.hueForm.valid){
-      if(this.hueForm.get("fingreso").value>=this.hueForm.get("fegreso").value){
-        console.log("Falso")
-        this.presentAlertError('Ingrese una fecha de egreso válida');
-        return
-      }
-      var esadmin=false
-      var tokendelhuesped;
-      if(this.hueForm.get('rol').value=="1"){
-        tokendelhuesped=this.hueForm.get('telefono').value+"_"+this.hueForm.get('habitacion').value;
-      }else{
-        tokendelhuesped="admin"
-      } 
-      let max:number
-      switch(this.hueForm.get('habitacion').value){
-        case '1': {max=500
-          break;}
-        case '2': {max=250
-          break;}
-        case '3': {max=100
-          break;}
-        case '4': {max=1500
-          break;}
-        case '5': {max=2000
-          break;}
-        case '6': {max=500
-          break;}
-        case '7': {max=2500
-          break;}
-        case '8': {max=750
-          break;}
-        case '9': {max=800
-          break;}
-      }
-      if(this.hueForm.get('aporte').value>max){
-        this.presentAlertError('Ingrese un aporte apropiado');
-        return
-      }
-      this.hue = {
-          nombre: this.hueForm.get('nombre').value,
-          codigo: tokendelhuesped,
+      if(this.huespedService.isRoomAbaliable(this.hueForm.get('habitacion').value)||this.hue.habitacion==undefined){
+        console.log("si entro pa "+this.hueForm.get('habitacion').value);
+        
 
-          tel: this.hueForm.get('telefono').value,
-          habitacion: this.hueForm.get('habitacion').value,
+        if(this.hueForm.get("fingreso").value>=this.hueForm.get("fegreso").value){
+          console.log("Falso")
+          this.presentAlertError('Ingrese una fecha de egreso válida');
+          return
+        }
+        var esadmin=false
+        var tokendelhuesped;
+        if(this.hueForm.get('rol').value=="1"){
+          tokendelhuesped=this.hueForm.get('telefono').value+"_"+this.hueForm.get('habitacion').value;
+        }else{
+          tokendelhuesped="admin"
+        } 
+        let max:number
+        switch(this.hueForm.get('habitacion').value){
+          case '1': {max=500
+            break;}
+          case '2': {max=250
+            break;}
+          case '3': {max=100
+            break;}
+          case '4': {max=1500
+            break;}
+          case '5': {max=2000
+            break;}
+          case '6': {max=500
+            break;}
+          case '7': {max=2500
+            break;}
+          case '8': {max=750
+            break;}
+          case '9': {max=800
+            break;}
+        }
+        if(this.hueForm.get('aporte').value>max){
+          this.presentAlertError('Ingrese un aporte apropiado');
+          return
+        }
+        this.hue = {
+            nombre: this.hueForm.get('nombre').value,
+            codigo: tokendelhuesped,
+            tel: this.hueForm.get('telefono').value,
+            habitacion: this.hueForm.get('habitacion').value,
 
-          token: tokendelhuesped,
-          aporte: this.hueForm.get('aporte').value,
-          admin: esadmin,
-          fingreso: this.newDate(this.hueForm.get("fingreso").value),
-          fegreso: this.newDate(this.hueForm.get("fegreso").value)
-        }  
-        this.huespedService.addHuesped(this.hue);
-        //this.presentAlert();
-        this.presentToast("top")
-        console.log(this.hue);
-        this.router.navigate(['/list-huesped'],{});
-
+            token: tokendelhuesped,
+            aporte: this.hueForm.get('aporte').value,
+            admin: esadmin,
+            fingreso: this.newDate(this.hueForm.get("fingreso").value),
+            fegreso: this.newDate(this.hueForm.get("fegreso").value)
+          }  
+          this.huespedService.addHuesped(this.hue);
+          var elementos = document.getElementsByTagName('input');
+          for (let i = 0; i < elementos.length; i++) {
+            elementos[i].value='';          
+          }
+          //this.presentAlert();
+          this.presentToast("top")
+          console.log(this.hue);
+          this.router.navigate(['/list-huesped'],{});
+        }else{
+          console.log("ya esta ocupada la habitacion "+this.hue.habitacion+" BRO");
+          this.presentAlertError('Seleccione otra habitacion, ya contamos con huesped en esta habitacion'+'\n'+'Las habitaciones ocupadas son: '+this.huespedService.getHabsOcupadas())
+      }
     }else{
         console.log(this.hue);
         this.presentAlertError('NO se guardó, ¡ingrese todos los campos correctamente!')
     }
-  }
+
+
+  
+}
+
 }
