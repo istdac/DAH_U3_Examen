@@ -196,7 +196,7 @@ export class NewHuespedPage implements OnInit {
           this.router.navigate(['/list-huesped'],{});
         }else{
           console.log("ya esta ocupada la habitacion "+this.hue.habitacion+" BRO");
-          this.presentAlertError('Seleccione otra habitacion, ya contamos con huesped en esta habitacion'+'\n'+'Las habitaciones ocupadas son: '+this.huespedService.getHabsOcupadas())
+          this.presentAlertError('Seleccione otra habitacion, ya contamos con huesped en esta habitacion'+'\n'+'Las habitaciones ocupadas son: '+this.huespedService.getConcatenacionHabsOcupadas())
       }
     }else{
         console.log(this.hue);

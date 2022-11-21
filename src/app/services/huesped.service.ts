@@ -7,6 +7,7 @@ export class HuespedService {
   private huespedes: Huesped[] = [];
   private lang: string
   private habsOcupadas:string
+  private concatenaHabsOcupadas:string
   constructor() {
     this.habsOcupadas="";
     this.huespedes = [
@@ -61,6 +62,9 @@ export class HuespedService {
    public getHabsOcupadas():string{
     return this.habsOcupadas;
    }
+   public getConcatenacionHabsOcupadas():string{
+    return this.concatenaHabsOcupadas;
+   }
    public getUsers(): Huesped[]{
     return this.huespedes;
    }
@@ -87,14 +91,21 @@ export class HuespedService {
 
   public isRoomAbaliable(room:string): boolean { 
     this.habsOcupadas='';
+    this.concatenaHabsOcupadas='';
     for(let i = 0 ; i < this.huespedes.length ; i++){
+      if(this.huespedes[i].habitacion!='undefined'){
+        console.log("ENTRA AL UNDEFINED");
+      this.concatenaHabsOcupadas=this.concatenaHabsOcupadas+this.huespedes[i].habitacion+", "
+      }
       if(this.huespedes[i].habitacion===room){//si alguna de las habitaciones ya esta ocupada, mandar falso
-          console.log(this.huespedes[i].habitacion+"==="+room);
-          this.habsOcupadas=this.habsOcupadas+room+", "
+          
+          this.habsOcupadas=this.habsOcupadas+this.huespedes[i].habitacion+", "
           
       }
       //console.log(this.huespedes[i].habitacion);
     }
+    console.log(this.concatenaHabsOcupadas);
+
     if(this.habsOcupadas===''){
       return true
     }
