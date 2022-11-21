@@ -24,6 +24,13 @@ export class Tab2Page implements OnInit {
   public codigo: string;
   public act: string;
   public aporteRemain: string;
+
+  public pagototal: number;
+
+  daydiff(first, second):number {
+    return Math.round((second - first) / (1000 * 60 * 60 * 24));
+  }
+
   constructor(private huespedService: HuespedService, private aroute: ActivatedRoute) {}
 
   ngOnInit() {
@@ -42,7 +49,12 @@ export class Tab2Page implements OnInit {
     if ((this.huesped.fingreso.getDate() <= this.hoy.getDate()) && (this.huesped.fegreso.getDate() >= this.hoy.getDate())) {
       this.show=true
       this.leng='es'
+      this.pagototal=this.daydiff(this.huesped.fingreso,this.huesped.fegreso);
+      console.log("lo de daydiff pago total"+this.pagototal);
       this.checkLanguage()
+
+      
+    
     } else {
       this.show=false
     }
@@ -107,7 +119,7 @@ export class Tab2Page implements OnInit {
         if(this.huesped.aporte-max==0){
           this.aporteRemain="Ha pagado su habitación, disfrute su tiempo"
         }else{
-          this.aporteRemain="Ha pagado de aporte $"+this.huesped.aporte+" con saldo restante de $"+(max-this.huesped.aporte)+" ; Asegure pagar antes de acabar su visita"
+          this.aporteRemain="Ha pagado de aporte $"+this.huesped.aporte+" con saldo restante de $"+((max*this.pagototal)-(this.huesped.aporte))+" ; Asegure pagar antes de acabar su visita"
         }
         break;
       case 'en':
@@ -123,7 +135,7 @@ export class Tab2Page implements OnInit {
         if(this.huesped.aporte-max==0){
           this.aporteRemain="Your room has been paid, enjoy your stay"
         }else{
-          this.aporteRemain="You have paid $"+this.huesped.aporte+" out of a total of $"+(max-this.huesped.aporte)+" ; Make sure to pay the remainder before checking out"
+          this.aporteRemain="You have paid $"+this.huesped.aporte+" out of a total of $"+((max*this.pagototal)-(this.huesped.aporte))+" ; Make sure to pay the remainder before checking out"
         }
         break;
       case 'fr':
@@ -139,7 +151,7 @@ export class Tab2Page implements OnInit {
         if(this.huesped.aporte-max==0){
           this.aporteRemain="Votre chambre a été payée, profitez de votre séjour"
         }else{
-          this.aporteRemain="Vous avez payé $"+this.huesped.aporte+" sur un total de $"+(max-this.huesped.aporte)+" ; Assurez-vous de payer le reste avant de partir"
+          this.aporteRemain="Vous avez payé $"+this.huesped.aporte+" sur un total de $"+((max*this.pagototal)-(this.huesped.aporte))+" ; Assurez-vous de payer le reste avant de partir"
         }
         break;
     }

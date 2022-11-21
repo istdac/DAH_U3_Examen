@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HuespedService } from '../services/huesped.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
@@ -11,7 +12,7 @@ export class TabsPage {
   public ingreso: string;
   public actividades: string;
 
-  constructor(private huespedService : HuespedService) {
+  constructor(private huespedService : HuespedService,private router: Router) {
     this.leng = this.huespedService.getLang();
     this.checkLanguage();
   }
@@ -33,5 +34,9 @@ export class TabsPage {
         this.actividades="Activités";
       break;
     }
+  }
+  logout(){
+    this.router.navigate(['/home'], {
+    });
   }
 }

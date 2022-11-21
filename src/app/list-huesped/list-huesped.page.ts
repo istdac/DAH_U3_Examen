@@ -52,4 +52,9 @@ export class ListHuespedPage implements OnInit {
   ngOnInit() {
   }
 
+  logout(){
+    this.router.navigate(['/home'], {
+    });
+  }
+
 }
