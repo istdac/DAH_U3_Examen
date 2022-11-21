@@ -13,7 +13,7 @@ export class HuespedService {
         codigo: undefined,
         tel: '3111568742',
         habitacion: undefined,
-        token: 'dicad3111568742',
+        token: '2222',
         admin: true
       },
       {
@@ -21,14 +21,14 @@ export class HuespedService {
         codigo: undefined,
         tel: '31134584216',
         habitacion: undefined,
-        token: '1800711',
+        token: '0000',
         admin: true
       },
       {
         nombre: 'Ana Bertha',
         codigo: undefined,
         tel: '31113451647',
-        token: '42057',
+        token: '1111',
         admin: true
       },
       {
