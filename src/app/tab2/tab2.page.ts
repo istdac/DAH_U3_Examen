@@ -24,6 +24,7 @@ export class Tab2Page implements OnInit {
   public codigo: string;
   public act: string;
   public aporteRemain: string;
+  public id:string
 
   public pagototal: number;
 
@@ -31,33 +32,67 @@ export class Tab2Page implements OnInit {
     return Math.round((second - first) / (1000 * 60 * 60 * 24));
   }
 
-  constructor(private huespedService: HuespedService, private aroute: ActivatedRoute) {}
+  constructor(private huespedService: HuespedService, private aroute: ActivatedRoute) {
+    this.huesped={
+      nombre: '',
+      codigo: "",
+      tel: '',
+      habitacion: "",
+      token: '',
+      admin: false
 
-  ngOnInit() {
+    }
+
+  }
+
+  ngOnInit() {  
+    this.checkLanguage()
+
     this.aroute.queryParams.subscribe(
       (params)=>{
-        this.index = params.index
+        this.huespedService.getHuespedById(params.id).subscribe(item=>{
+          this.huesped=item as Huesped;
+          console.log(this.huesped)
+          let f = this.huesped.fegreso as object
+          console.log(f)
+          let v = Object.values(f)
+          console.log(v)
+          for(var n in v){
+            console.log(v[n])
+            if(v[n]!=0){
+              this.huesped.fegreso= new Date(v[n]*1000)
+            }
+          }
+          f = this.huesped.fingreso as object
+          console.log(f)
+          v = Object.values(f)
+          console.log(v)
+          for(var n in v){
+            console.log(v[n])
+            if(v[n]!=0){
+              this.huesped.fingreso= new Date(v[n]*1000)
+            }
+          }
+  
+          if ((this.huesped.fingreso.getDate() <= this.hoy.getDate()) && (this.huesped.fegreso.getDate() >= this.hoy.getDate())) {
+            this.show=true
+            this.leng='es'
+            this.pagototal=this.daydiff(this.huesped.fingreso,this.huesped.fegreso);
+            console.log("lo de daydiff pago total"+this.pagototal);
+            this.checkLanguage()
+          } else {
+            this.show=false
+          }
+        })
       }
     );
-    console.log('index '+this.index)
+    /*console.log('index '+this.index)
     this.huesped = this.huespedService.getUsers()[this.index]
     console.log(this.huesped) 
     console.log(this.huesped.fingreso.getDate())
     console.log(this.hoy.getDate())
-    console.log(this.huesped.fegreso.getDate())
+    console.log(this.huesped.fegreso.getDate())*/
 
-    if ((this.huesped.fingreso.getDate() <= this.hoy.getDate()) && (this.huesped.fegreso.getDate() >= this.hoy.getDate())) {
-      this.show=true
-      this.leng='es'
-      this.pagototal=this.daydiff(this.huesped.fingreso,this.huesped.fegreso);
-      console.log("lo de daydiff pago total"+this.pagototal);
-      this.checkLanguage()
-
-      
-    
-    } else {
-      this.show=false
-    }
 
   }//ngOnInit
   public changeLang(l:string){
@@ -103,7 +138,13 @@ export class Tab2Page implements OnInit {
       case '9': {
         this.codigo = '9851'
         max=800
-        break;}
+        break;
+      }
+      default:{
+        this.codigo='1111'
+        max=800
+        break;
+      }
     }
     switch(this.leng){
       case 'es':

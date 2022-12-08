@@ -53,12 +53,7 @@ const routes: Routes = [
   },
   {
     path: 'view-huesped',
-    children: [
-      {
-        path:":nombre",
-        loadChildren: () => import('./view-huesped/view-huesped.module').then( m => m.ViewHuespedPageModule)
-      }
-    ]
+    loadChildren: () => import('./view-huesped/view-huesped.module').then( m => m.ViewHuespedPageModule)
   },
 
 

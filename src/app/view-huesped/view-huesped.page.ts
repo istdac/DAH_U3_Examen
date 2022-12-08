@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Timestamp } from 'rxjs';
 import { Huesped } from './../models/huesped';
 import { HuespedService } from './../services/huesped.service';
 
@@ -12,24 +13,57 @@ export class ViewHuespedPage implements OnInit {
   huesped: Huesped
   conuntrycode: string="52";
   wpnumber= ""
+  id:string
   url:string
   constructor(
     private activatedRoute: ActivatedRoute,
     private huespedservice: HuespedService
-  ) { }
+  ) {
+    this.huesped={
+      nombre: '',
+      codigo: "",
+      tel: '',
+      habitacion: "",
+      token: '',
+      admin: false
+
+    }
+   }
 
   ngOnInit() {
-    this.activatedRoute.paramMap.subscribe(paramMap => {
-      const res = paramMap.get('nombre');
-      this.huesped = this.huespedservice.getHuespedByNombre(res);
-      this.wpnumber= this.huesped.tel;
-      this.wpnumber=this.wpnumber.replace("-","");
-      this.wpnumber=this.wpnumber.replace("-","");
-      console.log(this.wpnumber+" HOLA NUMERO DE TELEFONO")
-      this.url="https://wa.me/"+this.conuntrycode+this.wpnumber+"?text=Hola Estimado Usuario tu Token de acceso es: "+this.huesped.token;
+    this.activatedRoute.queryParams.subscribe((params) => {
+      console.log(params.id)
+      this.huespedservice.getHuespedById(params.id).subscribe(item=>{
+        this.huesped= item as Huesped;
+        let f = this.huesped.fegreso as object
+        console.log(f)
+        let v = Object.values(f)
+        console.log(v)
+        for(var n in v){
+          console.log(v[n])
+          if(v[n]!=0){
+            this.huesped.fegreso= new Date(v[n]*1000)
+          }
+        }
+        f = this.huesped.fingreso as object
+        console.log(f)
+        v = Object.values(f)
+        console.log(v)
+        for(var n in v){
+          console.log(v[n])
+          if(v[n]!=0){
+            this.huesped.fingreso= new Date(v[n]*1000)
+          }
+        }
 
 
-    })
+        this.wpnumber= this.huesped.tel;
+        this.wpnumber=this.wpnumber.replace("-","");
+        this.wpnumber=this.wpnumber.replace("-","");
+        console.log(this.wpnumber+" HOLA NUMERO DE TELEFONO")
+        this.url="https://wa.me/"+this.conuntrycode+this.wpnumber+"?text=Hola Estimado Usuario tu Token de acceso es: "+this.huesped.token;
+      });
+    });
   }
 
 }

@@ -1,5 +1,8 @@
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Injectable } from '@angular/core';
+import {map} from 'rxjs/operators';
 import { Huesped } from '../models/huesped';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -8,7 +11,7 @@ export class HuespedService {
   private lang: string
   private habsOcupadas:string
   private concatenaHabsOcupadas:string
-  constructor() {
+  constructor(private firestore: AngularFirestore) {
     this.habsOcupadas="";
     this.huespedes = [
       {
@@ -47,15 +50,12 @@ export class HuespedService {
     this.lang = "es"
    }//const
 
-   public getHuespedByNombre(nombre: String): Huesped {
-    let item: Huesped;
-    item = this.huespedes.find( huesped =>{
-      return huesped.nombre===nombre;
-    })
-     return item;
+   public getHuespedById(id: string){
+    let result = this.firestore.collection('huespedes').doc(id).valueChanges();
+    return result;
   }
    public addHuesped(newHuesped: Huesped){
-    this.huespedes.push(newHuesped);
+    this.firestore.collection('huespedes').add(newHuesped)
   }
  
    //getters
@@ -65,20 +65,25 @@ export class HuespedService {
    public getConcatenacionHabsOcupadas():string{
     return this.concatenaHabsOcupadas;
    }
-   public getUsers(): Huesped[]{
-    return this.huespedes;
-   }
-
-   public getClients():Huesped[]{
-    return this.huespedes.filter(h=>!h.admin);
-   }
-   public getAdmins():Huesped[]{
-    return this.huespedes.filter(h=>h.admin);
+   public getUsers(): Observable<Huesped[]>{
+    return this.firestore.collection('huespedes') //Obtner conexion
+      .snapshotChanges() //Obtener snapshot con datos observables y si hay cambios se vuelve a ejecutar. Hace que no tengamos que refrescar la página
+      .pipe( //Pipe da el formato para nuestros datos que obtenemos
+        map(actions=> {
+          return actions.map(a=>{ //a es un objeto que contiene el payload que tiene un doc, el cual tiene data que nos trae la información
+            //Firestore separa datos de id
+            const data = a.payload.doc.data() as Huesped;
+            const id = a.payload.doc.id;
+            //Formato
+            return {id, ...data};
+          });
+        })
+      );
+      
    }
   
-   public deleteHuesped(pos:number):Huesped[]{
-    this.huespedes.splice(pos,1);
-    return this.huespedes;
+   public deleteHuesped(id:string){
+    this.firestore.collection('huespedes').doc(id).delete();
    }
 
    public setLang(l: string){

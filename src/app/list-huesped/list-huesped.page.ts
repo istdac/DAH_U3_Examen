@@ -15,14 +15,26 @@ export class ListHuespedPage implements OnInit {
 
   constructor(private hs: HuespedService, private ac: AlertController, private router: Router, 
     private activateroute:ActivatedRoute ) { 
-    this.huespedes=hs.getAdmins();
     this.activateroute.queryParams.subscribe((params) => {
-      this.huespedes = this.hs.getUsers();
+       this.hs.getUsers().subscribe(res=>{
+        this.huespedes=res;
+        console.log(this.huespedes)
+       });
     });
 
   }
 
-  public async deleteHuesped(pos:number){
+  public viewHuesped(id:string){
+    console.log(id)
+    this.router.navigate(['/view-huesped'],
+      {
+        queryParams: {id}
+      }
+    )
+
+  }
+
+  public async deleteHuesped(id:string){
     const alert = await this.ac.create({
       header: 'Confirmación',
       subHeader: '¿Está seguro que desea eliminar?',
@@ -37,7 +49,7 @@ export class ListHuespedPage implements OnInit {
           text: 'Eliminar',
           role: 'confirm',
           handler: ()=> {
-            this.huespedes = this.hs.deleteHuesped(pos);
+             this.hs.deleteHuesped(id);
           }
         }
       ]

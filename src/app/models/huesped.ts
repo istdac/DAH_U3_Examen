@@ -1,4 +1,5 @@
 export class Huesped {
+    id?: string;
     nombre!: string;
     codigo?: string;
     tel!: string;

@@ -14,8 +14,11 @@ export class HomePage implements OnInit{
   constructor(private hs: HuespedService, private fb: FormBuilder, private router: Router) {}
   
    ngOnInit(){
-    this.users=this.hs.getUsers()
-    this.loginForm = this.fb.group({
+    this.hs.getUsers().subscribe(res=>{
+      this.users=res;
+      console.log(this.users)
+     });
+  this.loginForm = this.fb.group({
       pw:['',Validators.required]
     });
    }
@@ -35,7 +38,7 @@ export class HomePage implements OnInit{
         this.router.navigate(['/list-huesped'],{})
       }else{
         this.router.navigate(['/tabs/tab2'],{
-          queryParams:{index:match}
+          queryParams:{id:this.users[match].id}
         })
       }
     }
