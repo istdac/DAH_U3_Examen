@@ -1,7 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component,ElementRef, OnInit } from '@angular/core';
 import { Huesped } from '../models/huesped';
 import { HuespedService } from '../services/huesped.service';
 import { ActivatedRoute } from '@angular/router';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Platform } from '@ionic/angular';
+import { Capacitor } from '@capacitor/core';
+import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Preferences } from '@capacitor/preferences';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
@@ -21,10 +30,18 @@ export class Tab2Page implements OnInit {
   public horarioH :string;
   public cajaST :string;
   public cajaS :string;
+  public expH:string;
+  public expB: string;
   public codigo: string;
   public act: string;
   public aporteRemain: string;
   public id:string
+  public filePickerRef: ElementRef<HTMLInputElement>;
+  public photo: SafeResourceUrl;
+  isDesktop: boolean;
+  public src=''
+  public putblob;
+  public filelist = []
 
   public pagototal: number;
 
@@ -32,7 +49,8 @@ export class Tab2Page implements OnInit {
     return Math.round((second - first) / (1000 * 60 * 60 * 24));
   }
 
-  constructor(private huespedService: HuespedService, private aroute: ActivatedRoute) {
+  constructor(private platform: Platform, private firestore: AngularFirestore, private storage:AngularFireStorage,
+    private sanitizer: DomSanitizer,private huespedService: HuespedService, private aroute: ActivatedRoute) {
     this.huesped={
       nombre: '',
       codigo: "",
@@ -42,10 +60,16 @@ export class Tab2Page implements OnInit {
       admin: false
 
     }
+    this.src=''
 
   }
 
   ngOnInit() {  
+    this.getFileList()
+    console.log(this.filelist)
+
+    if ((this.platform.is('mobile') && this.platform.is('hybrid')) || this.platform.is('desktop')) {
+      this.isDesktop = true;}
     this.checkLanguage()
 
     this.aroute.queryParams.subscribe(
@@ -54,21 +78,21 @@ export class Tab2Page implements OnInit {
           this.huesped=item as Huesped;
           console.log(this.huesped)
           let f = this.huesped.fegreso as object
-          console.log(f)
+          //console.log(f)
           let v = Object.values(f)
-          console.log(v)
+          //console.log(v)
           for(var n in v){
-            console.log(v[n])
+            //console.log(v[n])
             if(v[n]!=0){
               this.huesped.fegreso= new Date(v[n]*1000)
             }
           }
           f = this.huesped.fingreso as object
-          console.log(f)
+          //console.log(f)
           v = Object.values(f)
-          console.log(v)
+          //console.log(v)
           for(var n in v){
-            console.log(v[n])
+            //console.log(v[n])
             if(v[n]!=0){
               this.huesped.fingreso= new Date(v[n]*1000)
             }
@@ -78,7 +102,7 @@ export class Tab2Page implements OnInit {
             this.show=true
             this.leng='es'
             this.pagototal=this.daydiff(this.huesped.fingreso,this.huesped.fegreso);
-            console.log("lo de daydiff pago total"+this.pagototal);
+            //console.log("lo de daydiff pago total"+this.pagototal);
             this.checkLanguage()
           } else {
             this.show=false
@@ -99,6 +123,90 @@ export class Tab2Page implements OnInit {
     this.leng=l
     this.checkLanguage()
   }
+
+  async getPicture() {
+    if (!Capacitor.isPluginAvailable('Camera')) {
+      this.filePickerRef.nativeElement.click();
+      return;
+    }
+
+    const image = await Camera.getPhoto({
+      quality: 100,
+      width: 400,
+      allowEditing: false,
+      resultType: CameraResultType.Uri,
+      source: CameraSource.Prompt
+    });
+    //console.log(image)
+    this.src=image.path
+    //console.log(this.src )
+    var imageUrl = image.webPath;
+    //console.log(imageUrl)
+    const savedImageFile = await this.savePicture(image);
+    //console.log(savedImageFile)
+    this.getFileList()
+  }
+
+  private getFileList() {
+    this.filelist=[]
+    const pre ='/uploads/'
+    const ref = this.storage.ref(pre);
+    let myurlsubscription = ref.listAll().subscribe((data) => {
+      for (let i = 0; i < data.items.length; i++) {
+        let name = data.items[i].name;
+        console.log(name)
+        let newref = this.storage.ref(pre+data.items[i].name);
+        let url = newref.getDownloadURL().subscribe((data) => {
+          this.filelist.push(data)
+          
+        });
+      }
+      console.log(this.filelist)
+    });
+  }
+
+  private async savePicture(photo: Photo) {
+    // Convert photo to base64 format, required by Filesystem API to save
+    const base64Data = await this.readAsBase64(photo);
+  
+    // Write the file to the data directory
+    const fileName ="" + new Date().getTime() + '.jpeg';
+    const savedFile = await Filesystem.writeFile({
+      path: fileName,
+      data: base64Data,
+      directory: Directory.Data
+    });
+    //console.log(savedFile)
+    
+    const ref = this.storage.ref('/uploads/'+fileName)
+    ref.put(this.putblob)
+
+  
+    // Use webPath to display the new image instead of base64 since it's
+    // already loaded into memory
+    return {
+      filepath: fileName,
+      webviewPath: photo.webPath
+    };
+  }  
+  
+  private async readAsBase64(photo: Photo) {
+    // Fetch the photo, read as a blob, then convert to base64 format
+    const response = await fetch(photo.webPath!);
+    const blob = await response.blob();
+  
+    this.putblob=blob
+    return await this.convertBlobToBase64(blob) as string;
+  }
+  
+  private convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = () => {
+        resolve(reader.result);
+    };
+    reader.readAsDataURL(blob);
+  });
 
   public checkLanguage(){
     let max: number 

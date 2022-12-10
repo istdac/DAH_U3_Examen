@@ -3,13 +3,11 @@
     <ion-back-button></ion-back-button>
   </ion-buttons>
   <ion-toolbar>
-    <ion-title>
-      {{this.act}}
-    </ion-title>
+    <ion-title> {{this.act}} </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true"  *ngIf="show">
+<ion-content [fullscreen]="true" *ngIf="show">
   <ion-grid>
     <ion-row>
       <ion-col>
@@ -26,7 +24,12 @@
       </ion-item>
       <div class="ion-padding" slot="content">
         <div class="center">
-            <img style="float:left; margin:10px;" src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/stanley-hotel-hallway-elaine-webster.jpg" width="300px" height="300px">
+          <img
+            style="float: left; margin: 10px"
+            src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/stanley-hotel-hallway-elaine-webster.jpg"
+            width="300px"
+            height="300px"
+          />
           <h4>{{this.ingresoA}}</h4>
           {{this.aporteRemain}}
         </div>
@@ -38,7 +41,12 @@
       </ion-item>
       <div class="ion-padding" slot="content">
         <div class="center">
-            <img style="float:left; margin:10px;"src=" https://i.pinimg.com/originals/20/81/94/208194e48928908e33da0b0e2f1a0647.jpg" width="300px" height="300px">
+          <img
+            style="float: left; margin: 10px"
+            src=" https://i.pinimg.com/originals/20/81/94/208194e48928908e33da0b0e2f1a0647.jpg"
+            width="300px"
+            height="300px"
+          />
           <h4>{{this.hotelU}}</h4>
         </div>
       </div>
@@ -49,7 +57,12 @@
       </ion-item>
       <div class="ion-padding" slot="content">
         <div class="center">
-            <img style="float:left; margin:10px;" src="https://www.ige2.com/wp-content/uploads/2020/10/cambio-de-hora.jpg" width="300px" height="300px">         
+          <img
+            style="float: left; margin: 10px"
+            src="https://www.ige2.com/wp-content/uploads/2020/10/cambio-de-hora.jpg"
+            width="300px"
+            height="300px"
+          />
           <h4>{{this.horarioH}}</h4>
         </div>
       </div>
@@ -60,11 +73,42 @@
       </ion-item>
       <div class="ion-padding" slot="content">
         <div class="center">
-            <img style="float:left; margin:10px;" src="https://kechollazo.com/wp-content/uploads/2015/02/caja_seguridad_hierro.jpg" width="300px" height="300px" >
+          <img
+            style="float: left; margin: 10px"
+            src="https://kechollazo.com/wp-content/uploads/2015/02/caja_seguridad_hierro.jpg"
+            width="300px"
+            height="300px"
+          />
           <h4>{{this.cajaS}}</h4>
         </div>
       </div>
     </ion-accordion>
+    <ion-accordion value="camera">
+      <ion-item slot="header" color="light">
+        <ion-label>camera</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <div class="center">
+          <h4>camera</h4>
+          <ion-button size="small" (click)="getPicture()">
+            <ion-icon name="camera" slot="start"></ion-icon>
+            <ion-label>Upload Image</ion-label>
+          </ion-button>
+        </div>
+      </div>
+    </ion-accordion>
+    <ion-accordion value="exp">
+      <ion-item slot="header" color="light">
+        <ion-label>Header</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <div class="center">
+          <h4>Body</h4>
+          <div *ngFor="let item of filelist">
+            <img src="{{item}}" />
+          </div>
+        </div>
+      </div>
+    </ion-accordion>
   </ion-accordion-group>
-
 </ion-content>
