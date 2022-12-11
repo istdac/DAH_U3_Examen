@@ -10,7 +10,6 @@ import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Preferences } from '@capacitor/preferences';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
@@ -65,6 +64,7 @@ export class Tab2Page implements OnInit {
   }
 
   ngOnInit() {  
+    this.filelist=[]
     this.getFileList()
     console.log(this.filelist)
 
@@ -138,13 +138,10 @@ export class Tab2Page implements OnInit {
       source: CameraSource.Prompt
     });
     //console.log(image)
-    this.src=image.path
-    //console.log(this.src )
     var imageUrl = image.webPath;
     //console.log(imageUrl)
     const savedImageFile = await this.savePicture(image);
     //console.log(savedImageFile)
-    this.getFileList()
   }
 
   private getFileList() {
@@ -154,11 +151,9 @@ export class Tab2Page implements OnInit {
     let myurlsubscription = ref.listAll().subscribe((data) => {
       for (let i = 0; i < data.items.length; i++) {
         let name = data.items[i].name;
-        console.log(name)
         let newref = this.storage.ref(pre+data.items[i].name);
         let url = newref.getDownloadURL().subscribe((data) => {
           this.filelist.push(data)
-          
         });
       }
       console.log(this.filelist)
@@ -168,7 +163,6 @@ export class Tab2Page implements OnInit {
   private async savePicture(photo: Photo) {
     // Convert photo to base64 format, required by Filesystem API to save
     const base64Data = await this.readAsBase64(photo);
-  
     // Write the file to the data directory
     const fileName ="" + new Date().getTime() + '.jpeg';
     const savedFile = await Filesystem.writeFile({
@@ -176,12 +170,9 @@ export class Tab2Page implements OnInit {
       data: base64Data,
       directory: Directory.Data
     });
-    //console.log(savedFile)
     
     const ref = this.storage.ref('/uploads/'+fileName)
-    ref.put(this.putblob)
-
-  
+    ref.put(this.putblob).then( ()=> this.getFileList())
     // Use webPath to display the new image instead of base64 since it's
     // already loaded into memory
     return {
