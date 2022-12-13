@@ -41,7 +41,10 @@ export class Tab2Page implements OnInit {
   public src=''
   public putblob;
   public filelist = []
-
+  public camST:string
+  public camS:string
+  public recST:string
+  public recS:string
   public pagototal: number;
 
   daydiff(first, second):number {
@@ -261,6 +264,10 @@ export class Tab2Page implements OnInit {
         }else{
           this.aporteRemain="Ha pagado de aporte $"+this.huesped.aporte+" con saldo restante de $"+((max*this.pagototal)-(this.huesped.aporte))+" ; Asegure pagar antes de acabar su visita"
         }
+        this.camST='Cámara'
+        this.camS='Use esta cámara para subir una imagen'
+        this.recST='Comparta sus experiencias'
+        this.recS='Suba una imagen para compartir sus experiencias inolvidables'
         break;
       case 'en':
         this.act='Room Instructions'
@@ -277,6 +284,11 @@ export class Tab2Page implements OnInit {
         }else{
           this.aporteRemain="You have paid $"+this.huesped.aporte+" out of a total of $"+((max*this.pagototal)-(this.huesped.aporte))+" ; Make sure to pay the remainder before checking out"
         }
+        this.camST='Camera'
+        this.camS='Use this camera in order to upload an image'
+        this.recST='Share your experiences'
+        this.recS='Upload an image to share your unforgetable experiences'
+
         break;
       case 'fr':
         this.act='Instructions de la chambre'
@@ -293,6 +305,11 @@ export class Tab2Page implements OnInit {
         }else{
           this.aporteRemain="Vous avez payé $"+this.huesped.aporte+" sur un total de $"+((max*this.pagototal)-(this.huesped.aporte))+" ; Assurez-vous de payer le reste avant de partir"
         }
+        this.camST='Caméra'
+        this.camS='Utilisez cet appareil photo pour télécharger une image'
+        this.recST='Partagez vos expériences'
+        this.recS='Téléchargez une image pour partager vos expériences inoubliables'
+
         break;
     }
   }

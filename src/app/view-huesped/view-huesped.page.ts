@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Timestamp } from 'rxjs';
@@ -15,9 +16,12 @@ export class ViewHuespedPage implements OnInit {
   wpnumber= ""
   id:string
   url:string
+  public fechaI:string
+  public fechaF:string
   constructor(
     private activatedRoute: ActivatedRoute,
-    private huespedservice: HuespedService
+    private huespedservice: HuespedService,
+    private dp: DatePipe
   ) {
     this.huesped={
       nombre: '',
@@ -56,6 +60,8 @@ export class ViewHuespedPage implements OnInit {
           }
         }
 
+        this.fechaF=this.dp.transform(this.huesped.fegreso,'YYYY-MM-dd')
+        this.fechaI=this.dp.transform(this.huesped.fingreso,'YYYY-MM-dd')
 
         this.wpnumber= this.huesped.tel;
         this.wpnumber=this.wpnumber.replace("-","");

@@ -85,25 +85,25 @@
     </ion-accordion>
     <ion-accordion value="camera">
       <ion-item slot="header" color="light">
-        <ion-label>camera</ion-label>
+        <ion-label>{{this.camST}}</ion-label>
       </ion-item>
       <div class="ion-padding" slot="content">
         <div class="center">
-          <h4>camera</h4>
+          <h4>{{this.camS}}</h4>
           <ion-button size="small" (click)="getPicture()">
             <ion-icon name="camera" slot="start"></ion-icon>
-            <ion-label>Upload Image</ion-label>
+            <ion-label>{{this.camST}}</ion-label>
           </ion-button>
         </div>
       </div>
     </ion-accordion>
     <ion-accordion value="exp">
       <ion-item slot="header" color="light">
-        <ion-label>Header</ion-label>
+        <ion-label>{{this.recST}}</ion-label>
       </ion-item>
       <div class="ion-padding" slot="content">
         <div class="center">
-          <h4>Body</h4>
+          <h4>{{this.recS}}</h4>
           <div *ngFor="let item of filelist">
             <img src="{{item}}" />
           </div>
